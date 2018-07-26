@@ -87,9 +87,6 @@ public class Database {
         initDB();
         loadUsers();
         loadFoodmart();
-        loadEarthquakes();
-        loadLegacyDatasources();
-        importLicense();
     }
 
     private void initDB() {

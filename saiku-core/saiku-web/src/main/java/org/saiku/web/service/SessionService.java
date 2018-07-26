@@ -90,7 +90,7 @@ public class SessionService implements ISessionService {
 		this.authorisationPredicate = authorisationPredicate;
 	}
 
-	/* (non-Javadoc)
+  /* (non-Javadoc)
 	 * @see org.saiku.web.service.ISessionService#login(javax.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
 	 */
 	public Map<String, Object> login(HttpServletRequest req, String username, String password ) throws LicenseException {

@@ -128,15 +128,7 @@ public class LicenseUtils implements ILicenseUtils {
   @Override
   public void validateLicense()
           throws LicenseException, RepositoryException, IOException, ClassNotFoundException {
-    Object l = getLicense();
-
-    if (l instanceof SaikuLicense) {
-      ((SaikuLicense) l).validate(new Date(), getVersion(), false, false, true, false);
-    } else if (l instanceof SaikuLicense2) {
-      ((SaikuLicense2) l).validate(new Date(), getVersion(), false, false, true, false);
-    } else {
-      throw new LicenseException("Can't validate license");
-    }
+    // no return
   }
 
   private String getVersion() {
