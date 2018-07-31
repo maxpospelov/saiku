@@ -87,9 +87,7 @@ public class Database {
         initDB();
         loadUsers();
         loadFoodmart();
-        loadEarthquakes();
-        loadLegacyDatasources();
-        importLicense();
+        loadBi();
     }
 
     private void initDB() {
@@ -237,6 +235,39 @@ public class Database {
             }
         }
     }
+
+    private void loadBi() throws SQLException {
+        String url = "jdbc:postgresql://bi-db/bidb?ApplicationName=saiku";
+        String user = "bi_etl";
+        String pword = "b1passwd";
+        
+        JdbcDataSource ds3 = new JdbcDataSource();
+        ds3.setURL(url);
+        ds3.setUser(user);
+        ds3.setPassword(pword);
+
+        Connection c = ds3.getConnection();
+        DatabaseMetaData dbm = c.getMetaData();
+        ResultSet tables = dbm.getTables(null, null, "earthquakes", null);
+        String schema = "ddm";
+
+        Properties p = new Properties();
+        p.setProperty("advanced", "true");
+        p.setProperty("driver", "mondrian.olap4j.MondrianOlap4jDriver");
+        p.setProperty("location",
+            "jdbc:mondrian:Jdbc=jdbc:postgresql://bi-db/bidb?ApplicationName=saiku;Catalog=mondrian:///datasources/Schema.xml;JdbcDrivers=org.postgresql.Driver");
+        p.setProperty("username", user);
+        p.setProperty("password", pword);
+        p.setProperty("id", "4432dd20-fcae-11e3-a3ac-0800200c9a60");
+        SaikuDatasource ds = new SaikuDatasource("bi", SaikuDatasource.Type.OLAP, p);
+
+        try {
+            dsm.addDatasource(ds);
+        } catch (Exception e) {
+            log.error("Can't add data source to repo", e);
+        }                
+    }
+
 
     private static String readFile(String path, Charset encoding)
             throws IOException
